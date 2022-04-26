@@ -1,6 +1,7 @@
 import { Form, Input, Button, Modal, notification } from 'antd';
 import classes from './LoginModal.module.css';
 import Credential from '../../../../types/user/credentials';
+
 interface Props {
   isOpen: boolean;
   onClose: () => void;
@@ -37,7 +38,7 @@ const LoginModal = (props: Props) => {
             name="email"
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input />
+            <Input autoFocus={true} />
           </Form.Item>
           <Form.Item
             label="Password"
