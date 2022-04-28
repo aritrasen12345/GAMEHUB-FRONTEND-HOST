@@ -1,21 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  schoolName: '',
+  hostUserName: '',
 };
 
 export const appSlice = createSlice({
   name: 'appState',
   initialState,
   reducers: {
-    setSchoolName: (state) => {
-      const schoolName = localStorage.getItem('schoolName') || '';
-      state.schoolName = schoolName;
+    setHostUserName: (state) => {
+      const hostUserName = localStorage.getItem('hostUserName') || '';
+      state.hostUserName = hostUserName;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setSchoolName } = appSlice.actions;
+export const { setHostUserName } = appSlice.actions;
 
 export default appSlice.reducer;

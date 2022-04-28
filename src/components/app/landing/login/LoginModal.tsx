@@ -1,6 +1,7 @@
 import { Form, Input, Button, Modal, notification } from 'antd';
 import classes from './LoginModal.module.css';
 import Credential from '../../../../types/user/credentials';
+import { useState, useEffect } from 'react';
 
 interface Props {
   isOpen: boolean;
@@ -8,6 +9,16 @@ interface Props {
 }
 
 const LoginModal = (props: Props) => {
+  const [formIsValid, setFormIsValid] = useState<boolean>(false);
+  const [enteredEmail, setEnteredEmail] = useState<string>('');
+  const [enteredPassword, setEnteredPassword] = useState<string>('');
+
+  useEffect(() => {
+    setFormIsValid(
+      enteredEmail.includes('@') && enteredPassword.trim().length > 6,
+    );
+  }, [enteredEmail, enteredPassword]);
+
   const onFinish = (values: Credential) => {
     notification.success({
       message: 'Login Successful',
@@ -38,16 +49,28 @@ const LoginModal = (props: Props) => {
             name="email"
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input autoFocus={true} />
+            <Input
+              value={enteredEmail}
+              autoFocus={true}
+              onChange={(event) => setEnteredEmail(event.target.value)}
+            />
           </Form.Item>
           <Form.Item
             label="Password"
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password />
+            <Input.Password
+              value={enteredPassword}
+              onChange={(event) => setEnteredPassword(event.target.value)}
+            />
           </Form.Item>
-          <Button shape="round" type="primary" htmlType="submit">
+          <Button
+            shape="round"
+            type="primary"
+            htmlType="submit"
+            disabled={!formIsValid}
+          >
             Sign in
           </Button>
         </Form>
