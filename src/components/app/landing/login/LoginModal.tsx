@@ -9,16 +9,12 @@ interface Props {
 }
 
 const LoginModal = (props: Props) => {
-  const [formIsValid, setFormIsValid] = useState<boolean>(false);
-  const [enteredEmail, setEnteredEmail] = useState<string>('');
-  const [enteredPassword, setEnteredPassword] = useState<string>('');
+  const [form] = Form.useForm();
+  const [, forceUpdate] = useState<object>({});
 
   useEffect(() => {
-    setFormIsValid(
-      enteredEmail.includes('@') && enteredPassword.trim().length > 6,
-    );
-  }, [enteredEmail, enteredPassword]);
-
+    forceUpdate({});
+  }, []);
   const onFinish = (values: Credential) => {
     notification.success({
       message: 'Login Successful',
@@ -36,6 +32,7 @@ const LoginModal = (props: Props) => {
         footer={null}
       >
         <Form
+          form={form}
           className={classes['login-modal__wrapper']}
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
@@ -49,30 +46,31 @@ const LoginModal = (props: Props) => {
             name="email"
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input
-              value={enteredEmail}
-              autoFocus={true}
-              onChange={(event) => setEnteredEmail(event.target.value)}
-            />
+            <Input autoFocus={true} />
           </Form.Item>
           <Form.Item
             label="Password"
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password
-              value={enteredPassword}
-              onChange={(event) => setEnteredPassword(event.target.value)}
-            />
+            <Input.Password />
           </Form.Item>
-          <Button
-            shape="round"
-            type="primary"
-            htmlType="submit"
-            disabled={!formIsValid}
-          >
-            Sign in
-          </Button>
+          <Form.Item shouldUpdate>
+            {() => (
+              <Button
+                shape="round"
+                type="primary"
+                htmlType="submit"
+                disabled={
+                  !form.isFieldsTouched(true) ||
+                  !!form.getFieldsError().filter(({ errors }) => errors.length)
+                    .length
+                }
+              >
+                Sign in
+              </Button>
+            )}
+          </Form.Item>
         </Form>
       </Modal>
     </div>
