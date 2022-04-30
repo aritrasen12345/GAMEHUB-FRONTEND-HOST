@@ -1,7 +1,6 @@
 import { Form, Input, Button, Modal, notification } from 'antd';
 import classes from './LoginModal.module.css';
 import Credential from '../../../../types/user/credentials';
-import { useState, useEffect } from 'react';
 
 interface Props {
   isOpen: boolean;
@@ -9,12 +8,6 @@ interface Props {
 }
 
 const LoginModal = (props: Props) => {
-  const [form] = Form.useForm();
-  const [, forceUpdate] = useState<object>({});
-
-  useEffect(() => {
-    forceUpdate({});
-  }, []);
   const onFinish = (values: Credential) => {
     notification.success({
       message: 'Login Successful',
@@ -32,7 +25,6 @@ const LoginModal = (props: Props) => {
         footer={null}
       >
         <Form
-          form={form}
           className={classes['login-modal__wrapper']}
           labelCol={{ span: 24 }}
           wrapperCol={{ span: 24 }}
@@ -57,16 +49,7 @@ const LoginModal = (props: Props) => {
           </Form.Item>
           <Form.Item shouldUpdate>
             {() => (
-              <Button
-                shape="round"
-                type="primary"
-                htmlType="submit"
-                disabled={
-                  !form.isFieldsTouched(true) ||
-                  !!form.getFieldsError().filter(({ errors }) => errors.length)
-                    .length
-                }
-              >
+              <Button shape="round" type="primary" htmlType="submit">
                 Sign in
               </Button>
             )}
